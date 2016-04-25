@@ -1,13 +1,13 @@
 import React from 'react';
 
-import Job from '../advert';
+import Advert from '../advert';
+import Job from './Job';
 
 export default class App extends React.Component {
     render() {
-        console.log(Job);
         return (<div>
             <h1>Ethcore Application</h1>
-            <h2>Nicolas Gotchac</h2>
+            <Job advert={Advert} />
         </div>);
     }
 }
