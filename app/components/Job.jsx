@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Essentials from './Essentials';
+import Section from './Section';
 
 export default class App extends React.Component {
     render() {
@@ -9,7 +9,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <h2>{Advert.headline}</h2>
-                <Essentials value={Advert.essentials} />
+                <Section value={Advert.essentials} name="essentials" />
             </div>
         );
     }

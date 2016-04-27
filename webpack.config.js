@@ -26,8 +26,8 @@ const common = {
     module: {
         loaders: [
             {
-                test: /\.css$/,
-                loaders: ['style', 'css'],
+                test: /\.(css|less)$/,
+                loaders: ['style', 'css', 'less'],
                 include: PATHS.app
             },
             {
