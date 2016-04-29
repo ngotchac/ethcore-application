@@ -6,25 +6,20 @@ export default class Sentence extends React.Component {
     render() {
         var values = this.props.values;
 
-        var keys = Object.keys(values),
-            jsxSentence = [];
+        var jsxSentence = Object
+                .keys(values)
+                .map((key, i) => {
+                    if (i === 0) var end = (<span>.</span>);
+                    else if (i === 1) var end = (<span> and </span>);
+                    else var end = (<span>, </span>);
 
-        for (var i = 0; i < keys.length; i++) {
-            let key = keys[i];
-
-            if (i === keys.length-1) var end = (<span>.</span>);
-            else if (i === keys.length-2) var end = (<span> and </span>);
-            else var end = (<span>, </span>);
-
-            let jsx = (
-                <span key={key}>
-                    {valueToString(key, values[key])}
-                    {end}
-                </span>
-            );
-
-            jsxSentence.push(jsx);
-        }
+                    return (
+                        <span key={key}>
+                            {valueToString(key, values[key])}
+                            {end}
+                        </span>
+                    );
+                }).reverse();
 
         return (
             <p className={styles.className}>
@@ -45,27 +40,26 @@ function toBe(key, value) {
 function valueToString(key, value) {
     var be = toBe(key, value);
     
-    var beginning = (<span>the {key} {be} </span>),
+    var beginning = (<span key="beg">the {key} {be} </span>),
         end;
 
     if (key.toLowerCase() === 'salary') {
         end = salaryToString(value);
+
     } else if (key.toLowerCase() === 'corehours') {
         end = hoursToString(value);
+
     } else if (key.toLowerCase() === 'workweek') {
         end = secToH(value);
+
     } else if (typeof value === 'string') {
         end = value;
+
     } else if (value instanceof Array) {
         var capValues = value;
         end = capValues.slice(0, -1).join(', ') + ' or ' + capValues[capValues.length-1];
-    } else if (value instanceof Object) {
-        if (value.min && value.max) {
-            end = `from ${value.min} to ${value.max}`;
-        } else {
-            end = Object.keys(value).map(k => [k, value[k]].join(': ')).join(', ');
-        }
-    } else if (typeof value === 'number') {
+
+    }  else if (typeof value === 'number') {
         var minDate = (new Date(2000, 0, 1)).getTime();
         var maxDate = (new Date(2020, 11, 31)).getTime();
 
@@ -75,15 +69,23 @@ function valueToString(key, value) {
         } else {
             end = value;
         }
+        
     } else if (typeof value === 'boolean') {
-        var part = [(<span>there </span>)];
-        if (value) part.push((<span className="value">{be}</span>));
-        else part.push((<span className="value">{be} no</span>));
-        part.push((<span> {key}</span>));
+        var part = [(<span key="beg">there </span>)];
+        if (value) part.push((<span key="mid" className="value">{be}</span>));
+        else part.push((<span key="mid" className="value">{be} no</span>));
+        part.push((<span key="end"> {key}</span>));
         return part;
+    } else if (value instanceof Object) {
+        if (value.min && value.max) {
+            end = `from ${value.min} to ${value.max}`;
+        } else {
+            end = Object.keys(value).map(k => [k, value[k]].join(': ')).join(', ');
+        }
+
     }
 
-    end = (<span className="value">{end}</span>);
+    end = (<span key="end" className="value">{end}</span>);
 
     return [beginning, end];
 }

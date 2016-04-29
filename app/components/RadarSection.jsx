@@ -21,7 +21,7 @@ export default class RadarSection extends React.Component {
                     var radar = generateRadar(values[k]);
                     var intro = 'One';
                     if (i === 0) intro = 'And one';
-                    return (<div>
+                    return (<div key={i}>
                         <p>{intro} of these {k}:</p>
                         {radar}
                     </div>); 
