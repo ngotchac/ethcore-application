@@ -1,29 +1,36 @@
 import React from 'react';
 
-import './Section.less';
+import Sentence from './Sentence';
+import styles from './Section.less';
 
 export default class Section extends React.Component {
     render() {
-        var values = this.props.value,
-            name = capitalize(this.props.name);
+        var values = this.props.value;
+        if (this.props.name) {
+            var name = <h3>{capitalize(this.props.name)}</h3>;
+        }
 
-        var jsxValues = Object
-                .keys(values)
-                .map(key => {
-                    return (
-                        <p key={key}>
-                            <b>{capitalize(key)}</b><br />
-                            {valueToString(values[key])}
-                        </p>
-                    );
-                });
+        var keys = Object.keys(values),
+            sentences = [],
+            wordsPerSentence = 3;
 
+        var NSentences = Math.ceil(keys.length / wordsPerSentence);
+
+        for (let i = 0; i < NSentences; i++) {
+            // Get the keys for the sentence
+            let sKeys = keys.slice(3*i, 3*(i+1));
+            let sentence = sKeys.reduce((cur, k) => {
+                cur[k] = values[k];
+                return cur;
+            }, {});
+
+            sentences.push(<Sentence key={i} values={sentence} />);
+        }
 
         return (
-            <div>
-                <h3>{name}</h3>
-
-                {jsxValues}
+            <div className={styles.className}>
+                {name}
+                {sentences}
             </div>
         );
     }
@@ -38,48 +45,4 @@ function capitalize(string) {
         .split(' ')
         .map(s => capitalizeWord(s))
         .join(' ');
-}
-
-function valueToString(value) {
-    if (typeof value === 'string') {
-        return capitalize(value);
-    }
-    if (value instanceof Array) {
-        return value.map(s => capitalize(s)).join(', ');
-    }
-    if (value instanceof Object) {
-        if (value.min && value.max) {
-            return `From ${value.min} to ${value.max}`;
-        }
-
-        return Object.keys(value)
-            .map(k => {
-                return (
-                    <p>{capitalize(k)}: {valueToString(value[k])}</p>
-                );
-            });
-    }
-    if(typeof value === 'number') {
-        var minDate = (new Date(2000, 0, 1)).getTime();
-        var maxDate = (new Date(2020, 11, 31)).getTime();
-
-        // Test the number trying to recognize a timestamp
-        if (value > minDate && value < maxDate)
-            return printDate(value);
-
-        return value;
-    }
-    if (typeof value === 'boolean') {
-        if (value) return 'True';
-        return 'False';
-    }
-
-    console.log(typeof value, value instanceof Object, value);
-
-}
-
-function printDate(datetime) {
-    return (new Date(datetime))
-        .toUTCString()
-        .slice(0, 16);
 }
