@@ -8,7 +8,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <h1>Ethcore Application</h1>
-                <Job advert={Advert} />
+                <Job advert={Advert.job} />
             </div>
         );
     }

@@ -68,13 +68,13 @@ var job = {
         "jsonrpc": Level().Good,
         "uiux": Level().Good,
         "design": Level().Good,
-        "oneof": {
+        "unittests": {
             "junit": Level().Good,
             "mocha": Level().Good,
             "jasmine": Level().Good,
             "selenium": Level().Good,
         },
-        "oneof": {
+        "jsframework": {
             "react": Level().Familiar,
             "meteor": Level().Familiar,
             "angular": Level().Familiar,
@@ -82,7 +82,7 @@ var job = {
         "p2p": Level().Familiar,
         "ethereum": Level().Familiar,
         "blockchain": Level().Familiar,
-        "oneof": {
+        "backend": {
             "rust": Level().Familiar,
             "haskell": Level().Familiar,
             "ruby": Level().Familiar,
@@ -113,7 +113,10 @@ var job = {
     }
 };
 
-module.exports = job;
+module.exports = {
+       job: job,
+       level: Level()
+    };
 
 function EmploymentType() { return enumerate("Permanent", "Temporary", "Project"); }
 function TaxStatus() { return enumerate("Gross", "Net"); }
