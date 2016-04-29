@@ -34,17 +34,6 @@ export default class Sentence extends React.Component {
     }
 }
 
-function capitalizeWord(string) {
-    return string[0].toUpperCase() + string.slice(1);
-}
-
-function capitalize(string) {
-    return string
-        .split(' ')
-        .map(s => capitalizeWord(s))
-        .join(' ');
-}
-
 function toBe(key, value) {
     if (value instanceof Array) return 'could be';
 

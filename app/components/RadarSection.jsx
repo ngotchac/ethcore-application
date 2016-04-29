@@ -2,6 +2,7 @@ import React from 'react';
 var RadarChart = require("react-chartjs").Radar;
 
 import Advert from '../advert';
+import {capitalize} from '../utils';
 
 import styles1 from './Section.less';
 import styles2 from './RadarSection.less';
@@ -28,7 +29,7 @@ export default class RadarSection extends React.Component {
 
         return (
             <div className={[styles1.className, styles2.className].join(' ')}>
-                <h3>{name}</h3>
+                <h3>{capitalize(name)}</h3>
                 <p>We expect the following general skills:</p>
                 {generalRadar}
                 {oneOfs}
@@ -67,15 +68,4 @@ function generateRadar(values) {
             };
 
     return (<RadarChart data={chartData} options={chartOptions} />);
-}
-
-function capitalizeWord(string) {
-    return string[0].toUpperCase() + string.slice(1);
-}
-
-function capitalize(string) {
-    return string
-        .split(' ')
-        .map(s => capitalizeWord(s))
-        .join(' ');
 }

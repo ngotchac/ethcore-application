@@ -17,6 +17,7 @@ export default class App extends React.Component {
                 <Section value={Advert.equipment} name="equipment" />
                 <RadarSection value={Advert.technologies} name="technologies" />
                 <Section value={Advert.misc} name="misc" />
+                <Section value={Advert.other} name="other" />
             </div>
         );
     }
