@@ -1,3 +1,9 @@
+/**
+ * This is the main component, the Sentence component.
+ *
+ * It will render a sentence trying to be as accurate as possible
+ * in order for it to be readable and understandable.
+ */
 import React from 'react';
 
 import styles from './Sentence.less';
@@ -6,9 +12,13 @@ export default class Sentence extends React.Component {
     render() {
         var values = this.props.values;
 
+        // Construct the sentence out of each given parts.
         var jsxSentence = Object
                 .keys(values)
                 .map((key, i) => {
+                    // End with a bullet, a comma or a "and" depending if
+                    // it is the first, second or the other parts of the
+                    // sentence (the array is then reversed)
                     if (i === 0) var end = (<span>.</span>);
                     else if (i === 1) var end = (<span> and </span>);
                     else var end = (<span>, </span>);
@@ -29,6 +39,14 @@ export default class Sentence extends React.Component {
     }
 }
 
+/**
+ * Return the conjugation of the verb to be dependending
+ * of the value type or the key (plural/singular).
+ *
+ * @param  {String} key
+ * @param  {Object} value
+ * @return {String}
+ */
 function toBe(key, value) {
     if (value instanceof Array) return 'could be';
 
@@ -37,12 +55,23 @@ function toBe(key, value) {
     return 'is';
 }
 
+/**
+ * This is the main function of the component, that will
+ * print the correct sentence depending of the value and the key.
+ * It tries to be as accurate as possible, but a lot of work
+ * can be done here to improve it.
+ *
+ * @param  {String} key
+ * @param  {Object} value
+ * @return {String}
+ */
 function valueToString(key, value) {
     var be = toBe(key, value);
     
     var beginning = (<span key="beg">the {key} {be} </span>),
         end;
 
+    // These are the special cases, that need to be checked "manually"
     if (key.toLowerCase() === 'salary') {
         end = salaryToString(value);
 
@@ -52,6 +81,7 @@ function valueToString(key, value) {
     } else if (key.toLowerCase() === 'workweek') {
         end = secToH(value);
 
+    // These are the more automatically detected cases
     } else if (typeof value === 'string') {
         end = value;
 
@@ -69,7 +99,8 @@ function valueToString(key, value) {
         } else {
             end = value;
         }
-        
+    
+    // If it is a boolean, the sentence is kind of revesed.
     } else if (typeof value === 'boolean') {
         var part = [(<span key="beg">there </span>)];
         if (value) part.push((<span key="mid" className="value">{be}</span>));
@@ -90,6 +121,9 @@ function valueToString(key, value) {
     return [beginning, end];
 }
 
+/**
+ * Print a number with the comma separation
+ */
 function printNumber(number) {
     // Split decimal and integer parts
     var str = number.toString().split('.');
@@ -102,6 +136,10 @@ function printNumber(number) {
     return ent;
 }
 
+/**
+ * Print a time in seconds in a readable way
+ * (eg. 10h30m40s)
+ */
 function secToH(value) {
     var h = Math.floor(value / 3600),
         m = Math.floor((value % 3600) / 60),
@@ -114,6 +152,10 @@ function secToH(value) {
     return [hStr, mStr, sStr].join(' ');
 }
 
+/**
+ * Print the money with the currency symbol.
+ * This a simplified version of course.
+ */
 function moneyToString(amount, currency) {
     let cur = currency.toUpperCase();
     if (cur === 'USD') return '$' + amount;
@@ -122,6 +164,9 @@ function moneyToString(amount, currency) {
     return `(${currency}) ${amount}`;
 }
 
+/**
+ * Print the salary value (very specific)
+ */
 function salaryToString(salary) {
     var amount = printNumber(parseFloat(salary.amount)),
         currency = salary.currency,
@@ -138,6 +183,9 @@ function salaryToString(salary) {
     return `${money} per ${interval} (${status}) ${stockOptions}`;
 }
 
+/**
+ * Print the hours Object
+ */
 function hoursToString(hours) {
     var fromH = hours.from.toString().slice(0, 2),
         fromM = hours.from.toString().slice(2),
@@ -147,6 +195,9 @@ function hoursToString(hours) {
     return `from ${fromH}h${fromM} to ${toH}h${toM}`;
 }
 
+/**
+ * Print a date.
+ */
 function printDate(datetime) {
     return 'on ' + (new Date(datetime))
         .toUTCString()
