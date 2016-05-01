@@ -45,6 +45,8 @@ function generateRadar(values) {
             .keys(values)
             .filter(k => levels.indexOf(values[k].toString()) >= 0);
 
+    shuffle(radarKeys);
+
     var labels = radarKeys.map(k => capitalize(k));
     var data = radarKeys.map(k => {
         return levels.indexOf(values[k]) + 1;
@@ -68,4 +70,25 @@ function generateRadar(values) {
             };
 
     return (<RadarChart data={chartData} options={chartOptions} />);
+}
+
+/**
+ * Shuffles array in place.
+ */
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
 }

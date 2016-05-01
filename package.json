@@ -4,7 +4,7 @@
   "description": "A small web-app for sending with my application to a job @Ethcore",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --progress -p --colors",
+    "build": "webpack --progress -p --colors && surge -p ./build/ -d ngotchac-ethcore.surge.sh",
     "start": "webpack-dev-server"
   },
   "keywords": [
@@ -24,6 +24,7 @@
     "less": "^2.6.1",
     "less-loader": "^2.2.3",
     "style-loader": "^0.13.1",
+    "surge": "^0.17.7",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
     "webpack-merge": "^0.12.0"
